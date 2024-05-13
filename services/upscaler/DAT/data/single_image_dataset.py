@@ -2,10 +2,10 @@ from os import path as osp
 from torch.utils import data as data
 from torchvision.transforms.functional import normalize
 
-from DAT.data.data_util import paths_from_lmdb
-from DAT.utils import FileClient, imfrombytes, img2tensor, scandir
-from DAT.utils.matlab_functions import rgb2ycbcr
-from DAT.utils.registry import DATASET_REGISTRY
+from data.data_util import paths_from_lmdb
+from utils import FileClient, imfrombytes, img2tensor, scandir
+from utils.matlab_functions import rgb2ycbcr
+from utils.registry import DATASET_REGISTRY
 
 
 @DATASET_REGISTRY.register()

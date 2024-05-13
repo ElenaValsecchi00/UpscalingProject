@@ -11,7 +11,7 @@ from einops import rearrange
 import math
 import numpy as np
 
-from DAT.utils.registry import ARCH_REGISTRY
+from utils.registry import ARCH_REGISTRY
 
 
 def img2windows(img, H_sp, W_sp):

@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-from DAT.metrics.metric_util import reorder_image, to_y_channel
-from DAT.utils.registry import METRIC_REGISTRY
+from metrics.metric_util import reorder_image, to_y_channel
+from utils.registry import METRIC_REGISTRY
 
 
 @METRIC_REGISTRY.register()

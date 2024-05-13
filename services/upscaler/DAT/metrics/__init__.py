@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from DAT.utils.registry import METRIC_REGISTRY
+from utils.registry import METRIC_REGISTRY
 from .psnr_ssim import calculate_psnr, calculate_ssim
 
 __all__ = ['calculate_psnr', 'calculate_ssim']

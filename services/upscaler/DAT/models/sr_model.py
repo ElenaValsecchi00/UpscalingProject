@@ -3,11 +3,11 @@ from collections import OrderedDict
 from os import path as osp
 from tqdm import tqdm
 
-from DAT.archs import build_network
-from DAT.losses import build_loss
-from DAT.metrics import calculate_metric
-from DAT.utils import get_root_logger, imwrite, tensor2img
-from DAT.utils.registry import MODEL_REGISTRY
+from archs import build_network
+from losses import build_loss
+from metrics import calculate_metric
+from utils import get_root_logger, imwrite, tensor2img
+from utils.registry import MODEL_REGISTRY
 from .base_model import BaseModel
 
 

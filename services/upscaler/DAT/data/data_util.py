@@ -4,7 +4,7 @@ import torch
 from os import path as osp
 from torch.nn import functional as F
 
-from DAT.utils import img2tensor, scandir
+from utils import img2tensor, scandir
 
 
 def generate_frame_indices(crt_idx, max_frame_num, num_frames, padding='reflection'):

@@ -2,10 +2,10 @@ import logging
 import torch
 from os import path as osp
 
-from DAT.data import build_dataloader, build_dataset
-from DAT.models import build_model
-from DAT.utils import get_root_logger, get_time_str, make_exp_dirs
-from DAT.utils.options import dict2str, parse_options
+from data import build_dataloader, build_dataset
+from models import build_model
+from utils import get_root_logger, get_time_str, make_exp_dirs
+from utils.options import dict2str, parse_options
 
 
 def test_pipeline(root_path):

@@ -5,13 +5,13 @@ import time
 import torch
 from os import path as osp
 
-from DAT.data import build_dataloader, build_dataset
-from DAT.data.data_sampler import EnlargedSampler
-from DAT.data.prefetch_dataloader import CPUPrefetcher, CUDAPrefetcher
-from DAT.models import build_model
-from DAT.utils import (AvgTimer, MessageLogger, check_resume, get_env_info, get_root_logger, get_time_str,
+from data import build_dataloader, build_dataset
+from data.data_sampler import EnlargedSampler
+from data.prefetch_dataloader import CPUPrefetcher, CUDAPrefetcher
+from models import build_model
+from utils import (AvgTimer, MessageLogger, check_resume, get_env_info, get_root_logger, get_time_str,
                            init_tb_logger, init_wandb_logger, make_exp_dirs, mkdir_and_rename, scandir)
-from DAT.utils.options import copy_opt_file, dict2str, parse_options
+from utils.options import copy_opt_file, dict2str, parse_options
 
 
 def init_tb_loggers(opt):

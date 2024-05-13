@@ -1,7 +1,7 @@
 from flask import Flask, request,jsonify
 import numpy as np
 import torch
-from DAT.test import test_pipeline
+from test import test_pipeline
 
 app = Flask(__name__)
 #load model

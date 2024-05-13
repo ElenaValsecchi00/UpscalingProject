@@ -14,6 +14,8 @@ opt = {
     "scale": 4,
     "num_gpu": 1,
     "manual_seed": 10,
+    "is_train": False,
+    "dist": False,
     "network_g": {
         "type": "DAT",
         "upscale": 4,
@@ -40,18 +42,16 @@ opt = {
 model: DATModel = build_model(opt)
 
 def load_image(img_np: np.ndarray):
-    img_lq = cv2.imdecode(img_np, cv2.IMREAD_COLOR)
-
     # BGR to YCbCr
-    img_lq = rgb2ycbcr(img_lq, y_only=True)[..., None]
+    img_np = rgb2ycbcr(img_np, y_only=True)[..., None]
 
     # BGR to RGB, HWC to CHW, numpy to tensor
-    img_lq = img2tensor(img_lq, bgr2rgb=True, float32=True)
+    img_np = img2tensor(img_np, bgr2rgb=True, float32=True)
 
     # normalize
     mean, std = True, True
-    normalize(img_lq, mean, std, inplace=True)
-    return {'lq': img_lq, 'lq_path': ""}
+    normalize(img_np, mean, std, inplace=True)
+    return {'lq': img_np, 'lq_path': ""}
 
 def inference(image: np.ndarray):
     model.feed_data(load_image(image))
@@ -66,7 +66,7 @@ def inference(image: np.ndarray):
     torch.cuda.empty_cache()
 
     # Save image
-    cv2.imwrite(sr_img, 'res/result1.png')
+    imwrite(sr_img, 'res/result1.png')
     
 if __name__ == '__main__':
     img = cv2.imread('images/baboon.png')

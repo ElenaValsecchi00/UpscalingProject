@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from DAT.utils import get_root_logger
-from DAT.utils.registry import LOSS_REGISTRY
+from utils import get_root_logger
+from utils.registry import LOSS_REGISTRY
 from .losses import (CharbonnierLoss, GANLoss, L1Loss, MSELoss, WeightedTVLoss, g_path_regularize,
                      gradient_penalty_loss, r1_penalty)
 

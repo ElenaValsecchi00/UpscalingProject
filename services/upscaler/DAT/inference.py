@@ -8,11 +8,12 @@ from models.dat_model import DATModel
 from models import build_model
 from torchvision.transforms.functional import normalize
 
+OUTPUT_PATH = 'res/'
 opt = {
     "name": "test_single_x4",
     "model_type": "DATModel",
     "scale": 4,
-    "num_gpu": 1,
+    "num_gpu": 1 if torch.cuda.is_available() else 0,
     "manual_seed": 10,
     "is_train": False,
     "dist": False,
@@ -22,10 +23,10 @@ opt = {
         "in_chans": 3,
         "img_size": 64,
         "img_range": 1.,
-        "split_size": [8,32],
-        "depth": [6,6,6,6,6,6],
+        "split_size": [8, 32],
+        "depth": [6, 6, 6, 6, 6, 6],
         "embed_dim": 180,
-        "num_heads": [6,6,6,6,6,6],
+        "num_heads": [6, 6, 6, 6, 6, 6],
         "expansion_factor": 4,
         "resi_connection": '1conv'
     },
@@ -33,7 +34,7 @@ opt = {
         "pretrain_network_g": "models/DAT_x4.pth",
         "strict_load_g": True
     },
-    "val":{
+    "val": {
         "save_img": True,
         "suffix": 'x4',  # add suffix to saved images, if None, use exp name
         "use_chop": False  # True to save memory, if img too large
@@ -41,33 +42,45 @@ opt = {
 }
 model: DATModel = build_model(opt)
 
-def load_image(img_np: np.ndarray):
-    # BGR to YCbCr
-    img_np = rgb2ycbcr(img_np, y_only=True)[..., None]
 
-    # BGR to RGB, HWC to CHW, numpy to tensor
-    img_np = img2tensor(img_np, bgr2rgb=True, float32=True)
+def load_image(image_path: str) -> dict:
+    """
+    Take a path to an image and return a dictionary containing the image as a tensor.
 
-    # normalize
-    mean, std = True, True
-    normalize(img_np, mean, std, inplace=True)
-    return {'lq': img_np, 'lq_path': ""}
+    Args:
+        img_np (np.ndarray): Image as numpy array.
+    """
+    # Load image
+    # TODO: Load image from AWS S3 bucket
+    img = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    img = img.astype(np.float32) / 255.
 
-def inference(image: np.ndarray):
-    model.feed_data(load_image(image))
+    # To tensor
+    img = img2tensor(img, bgr2rgb=True, float32=True)
+
+    return {'lq': img}
+
+
+def inference(image_path: str):
+    """
+    Take an image path, upscale it and save the result.
+
+    Args:
+        image_path (str): Path to the image.
+    """
+    # Load image
+    image = load_image(image_path)
+    model.feed_data(image)
+
+    # Inference
     model.test()
-
     visuals = model.get_current_visuals()
     sr_img = tensor2img([visuals['result']])
 
-    # tentative for out of GPU memory
-    del model.lq
-    del model.output
-    torch.cuda.empty_cache()
-
     # Save image
-    imwrite(sr_img, 'res/result1.png')
-    
+    # TODO: Save image to AWS S3 bucket
+    imwrite(sr_img, OUTPUT_PATH + 'sr.png')
+
+
 if __name__ == '__main__':
-    img = cv2.imread('images/baboon.png')
-    inference(img)
+    inference('images/baboon.png')

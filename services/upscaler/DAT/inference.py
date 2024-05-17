@@ -7,6 +7,8 @@ from utils.matlab_functions import rgb2ycbcr
 from models.dat_model import DATModel
 from models import build_model
 from torchvision.transforms.functional import normalize
+from buckets import upload_to_aws, download_from_aws
+
 
 OUTPUT_PATH = 'res/'
 opt = {
@@ -41,18 +43,23 @@ opt = {
     }
 }
 model: DATModel = build_model(opt)
+def get_model():
+    return model
 
-
-def load_image(image_path: str) -> dict:
+def load_image(bucket_name: str, image_path: str) -> dict:
     """
     Take a path to an image and return a dictionary containing the image as a tensor.
 
     Args:
-        img_np (np.ndarray): Image as numpy array.
+        bucket_name (str): Name of the AWS S3 bucket.
+        image_path (str): Path to the image in AWS S3 bucket.
     """
-    # Load image
-    # TODO: Load image from AWS S3 bucket
-    img = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    # Load image from AWS S3 bucket
+    data = download_from_aws(bucket_name, image_path)
+
+    # Decode image
+    buffer = np.frombuffer(data, np.uint8)
+    img = cv2.imdecode(buffer, -1)
     img = img.astype(np.float32) / 255.
 
     # To tensor
@@ -61,15 +68,16 @@ def load_image(image_path: str) -> dict:
     return {'lq': img}
 
 
-def inference(image_path: str):
+def inference(image_path: str, model, bucket_name: str) -> np.ndarray:
     """
     Take an image path, upscale it and save the result.
 
     Args:
         image_path (str): Path to the image.
-    """
+    """    
     # Load image
-    image = load_image(image_path)
+    file_name = image_path.split('/')[-1]
+    image = load_image(bucket_name, image_path)
     model.feed_data(image)
 
     # Inference
@@ -77,9 +85,10 @@ def inference(image_path: str):
     visuals = model.get_current_visuals()
     sr_img = tensor2img([visuals['result']])
 
-    # Save image
-    # TODO: Save image to AWS S3 bucket
-    imwrite(sr_img, OUTPUT_PATH + 'sr.png')
+    # Save image to AWS S3 bucket
+    bytes_img = cv2.imencode('.png', sr_img)[1].tobytes()
+    upload_to_aws(bytes_img, bucket_name, "upscale_" + file_name)
+    return sr_img
 
 
 if __name__ == '__main__':

@@ -2,3 +2,4 @@ cloud-env/
 *.pth
 *.pyc
 *.png
+*.cfg

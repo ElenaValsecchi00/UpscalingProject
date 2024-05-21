@@ -1,6 +1,8 @@
 import boto3
 import uuid
 import os
+import numpy as np
+import cv2
 
 # Load the AWS Credentials from the current path
 os.environ['AWS_SHARED_CREDENTIALS_FILE'] = './aws-credentials.cfg'
@@ -11,6 +13,26 @@ s3_client = boto3.client('s3')
 s3_resource = boto3.resource('s3')
 
 BUCKET_PREFIX = 'images'
+
+def load_image(bucket_name: str, image_path: str) -> dict:
+    """
+    Take a path to an image and return a dictionary containing the image as a tensor.
+
+    Args:
+        bucket_name (str): Name of the AWS S3 bucket.
+        image_path (str): Path to the image in AWS S3 bucket.
+    """
+    # Load image from AWS S3 bucket
+    data = download_from_aws(bucket_name, image_path)
+
+    # Decode image
+    buffer = np.frombuffer(data, np.uint8)
+    img = cv2.imdecode(buffer, -1)
+    img = img.astype(np.float32) / 255.
+
+    
+    return img
+
 
 def create_bucket(s3_connection: boto3.client) -> tuple[str, bool]:
     """
@@ -64,7 +86,7 @@ def upload_file_to_aws(file_path: str, bucket: str, filename: str) -> tuple[str,
         print(f"Error: {e}")
         return "", False
 
-def upload_to_aws(content: bytes, bucket: str, filename: str) -> tuple[str, bool]:
+def upload_to_aws(sr_img: np.ndarray, bucket: str, filename: str) -> tuple[str, bool]:
     """
     Upload a file to an S3 bucket.
 
@@ -78,8 +100,11 @@ def upload_to_aws(content: bytes, bucket: str, filename: str) -> tuple[str, bool
         bool: True if the file was uploaded successfully
     """
     try:
-        filename = f"{filename}_{str(uuid.uuid4())}"
-        s3_client.put_object(Bucket=bucket, Key=filename, Body=content)
+        # Convert the image to bytes
+        bytes_img = cv2.imencode('.png', sr_img)[1].tobytes()
+        # Save the image to the S3 bucket
+        filename = f"{filename}_{str(uuid.uuid4())}.png"
+        s3_client.put_object(Bucket=bucket, Key=filename, Body=bytes_img)
         return filename, True
     except Exception as e:
         print(f"Error: {e}")

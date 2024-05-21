@@ -46,48 +46,26 @@ model: DATModel = build_model(opt)
 def get_model():
     return model
 
-def load_image(bucket_name: str, image_path: str) -> dict:
-    """
-    Take a path to an image and return a dictionary containing the image as a tensor.
 
-    Args:
-        bucket_name (str): Name of the AWS S3 bucket.
-        image_path (str): Path to the image in AWS S3 bucket.
-    """
-    # Load image from AWS S3 bucket
-    data = download_from_aws(bucket_name, image_path)
-
-    # Decode image
-    buffer = np.frombuffer(data, np.uint8)
-    img = cv2.imdecode(buffer, -1)
-    img = img.astype(np.float32) / 255.
-
-    # To tensor
-    img = img2tensor(img, bgr2rgb=True, float32=True)
-
-    return {'lq': img}
-
-
-def inference(image_path: str, model, bucket_name: str) -> np.ndarray:
+def inference(image, model, bucket_name: str) -> np.ndarray:
     """
     Take an image path, upscale it and save the result.
 
     Args:
         image_path (str): Path to the image.
     """    
-    # Load image
-    file_name = image_path.split('/')[-1]
-    image = load_image(bucket_name, image_path)
-    model.feed_data(image)
+    # Convert image to tensor
+    # To tensor
+    image = img2tensor(image, bgr2rgb=True, float32=True)
+
+    
+    model.feed_data({'lq':image})
 
     # Inference
     model.test()
     visuals = model.get_current_visuals()
     sr_img = tensor2img([visuals['result']])
-
-    # Save image to AWS S3 bucket
-    bytes_img = cv2.imencode('.png', sr_img)[1].tobytes()
-    upload_to_aws(bytes_img, bucket_name, "upscale_" + file_name)
+    
     return sr_img
 
 

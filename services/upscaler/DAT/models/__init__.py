@@ -23,6 +23,7 @@ def build_model(opt):
         opt (dict): Configuration. It must contain:
             model_type (str): Model type.
     """
+    print("sto buildando")
     opt = deepcopy(opt)
     model = MODEL_REGISTRY.get(opt['model_type'])(opt)
     logger = get_root_logger()

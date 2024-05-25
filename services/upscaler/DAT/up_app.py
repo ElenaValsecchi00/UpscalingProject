@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-from inference import inference, get_model
+from inference import inference as ups_inference, get_model
+from harmo_inference import inference as harmo_inference
 import buckets
 from cv2filters import grayscale, sharpening, noise_red, display_image
 
@@ -15,6 +16,7 @@ def edit():
     image_path = data['image']
     filters = data['filters']
     upscale = data['upscale']
+    harmonize = data['harmonize']
 
     # Load the image from the bucket
     image = buckets.load_image(BUCKET_NAME, image_path)
@@ -22,24 +24,27 @@ def edit():
     
     # Apply upscale if requested
     if upscale:
-        img = inference(image, model)
-        print("ho inferencato")
+        image = ups_inference(image, model)
+        print("ho upscalato")
+
+    if harmonize:
+        image = harmo_inference(image)
+        print("ho armonizzato")
 
     # Apply filters if requested as ordered in list
     for filter in filters:
         if filter == 'grayscale':
-            img = grayscale(image)
+            image = grayscale(image)
         elif filter == 'sharpening':
-            img = sharpening(image)
+            image = sharpening(image)
         elif filter == 'noise_red':
-            img = noise_red(image)
+            image = noise_red(image)
     print("Ho filtrato")
 
     # Save the image to the bucket
     file_name = image_path.split('/')[-1]
-    buckets.upload_to_aws(img, BUCKET_NAME, file_name +"_edited")
+    buckets.upload_to_aws(image, BUCKET_NAME, file_name +"_edited")
     print("ho uploadato")
-    display_image(img)
     return jsonify('edited')
 
 if __name__ == '__main__':

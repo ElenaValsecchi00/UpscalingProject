@@ -1,0 +1,154 @@
+{
+  "C:\\Users\\Elena\\Documents\\Università\\CloudComputing\\UpscalingProject\\cloudProject": {
+    "versionSfCore": null,
+    "versionFramework": "4.0.27",
+    "isWithinCompose": false,
+    "composeOrgName": null,
+    "servicePath": "C:\\Users\\Elena\\Documents\\Università\\CloudComputing\\UpscalingProject\\cloudProject",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "cloudprojectsapienza",
+      "service": "cloudProject",
+      "custom": {
+        "wsgi": {
+          "app": "app.app"
+        }
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.11"
+      },
+      "functions": {
+        "api": {
+          "handler": "wsgi_handler.handler",
+          "events": [
+            {
+              "http": {
+                "path": "/",
+                "method": "ANY"
+              }
+            },
+            {
+              "http": {
+                "path": "/{proxy+}",
+                "method": "ANY"
+              }
+            }
+          ]
+        }
+      },
+      "plugins": [
+        "serverless-wsgi",
+        "serverless-python-requirements"
+      ]
+    },
+    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: cloudprojectsapienza\n# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: cloudProject\n\ncustom:\n  wsgi:\n    app: app.app\n\nprovider:\n  name: aws\n  runtime: python3.11\nfunctions:\n  api:\n    handler: wsgi_handler.handler\n    events:\n      - http:\n          path: /\n          method: ANY\n      - http:\n          path: /{proxy+}\n          method: ANY\n\nplugins:\n  - serverless-wsgi\n  - serverless-python-requirements\n",
+    "command": [
+      "wsgi",
+      "serve"
+    ],
+    "options": {},
+    "error": {
+      "message": "AWS credentials missing or invalid. Run \"serverless\" to set up AWS credentials, or learn more in our docs: http://slss.io/aws-creds-setup.",
+      "code": "AWS_CREDENTIALS_MISSING"
+    },
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "b9eb5f24-295f-4f13-a5a3-acc10c63c48e",
+    "orgName": "cloudprojectsapienza",
+    "userId": "r4rjkhSGD3LRMtM6S7",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "cloudprojectsapienza",
+    "subscription": null,
+    "userEmail": "elena.valsecchi12@gmail.com",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  },
+  "C:\\Users\\Elena\\Documents\\Università\\CloudComputing\\UpscalingProject\\backend": {
+    "versionSfCore": null,
+    "versionFramework": "4.0.27",
+    "isWithinCompose": false,
+    "composeOrgName": null,
+    "servicePath": "C:\\Users\\Elena\\Documents\\Università\\CloudComputing\\UpscalingProject\\backend",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "cloudprojectsapienza",
+      "service": "backend",
+      "custom": {
+        "wsgi": {
+          "app": "app.app"
+        }
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.11"
+      },
+      "functions": {
+        "api": {
+          "handler": "wsgi_handler.handler",
+          "events": [
+            {
+              "http": {
+                "path": "/",
+                "method": "ANY"
+              }
+            },
+            {
+              "http": {
+                "path": "/{proxy+}",
+                "method": "ANY"
+              }
+            }
+          ]
+        }
+      },
+      "plugins": [
+        "serverless-wsgi",
+        "serverless-python-requirements"
+      ]
+    },
+    "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: cloudprojectsapienza\n# \"service\" is the name of this project. This will also be added to your AWS resource names.\nservice: backend\n\ncustom:\n  wsgi:\n    app: app.app\n\nprovider:\n  name: aws\n  runtime: python3.11\n\nfunctions:\n  api:\n    handler: wsgi_handler.handler\n    events:\n      - http:\n          path: /\n          method: ANY\n      - http:\n          path: /{proxy+}\n          method: ANY\n\nplugins:\n  - serverless-wsgi\n  - serverless-python-requirements\n",
+    "command": [
+      "wsgi",
+      "serve"
+    ],
+    "options": {},
+    "error": {
+      "message": "AWS credentials appear to be invalid. Run \"serverless\" to set up AWS credentials, or learn more in our docs: http://slss.io/aws-creds-setup.",
+      "code": "AWS_CREDENTIALS_MISSING"
+    },
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "b9eb5f24-295f-4f13-a5a3-acc10c63c48e",
+    "orgName": "cloudprojectsapienza",
+    "userId": "r4rjkhSGD3LRMtM6S7",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "cloudprojectsapienza",
+    "subscription": null,
+    "userEmail": "elena.valsecchi12@gmail.com",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}

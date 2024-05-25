@@ -16,3 +16,4 @@ yapf
 timm 
 einops
 h5py
+kornia

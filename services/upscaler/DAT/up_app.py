@@ -22,7 +22,7 @@ def edit():
     
     # Apply upscale if requested
     if upscale:
-        img = inference(image, model, BUCKET_NAME)
+        img = inference(image, model)
         print("ho inferencato")
 
     # Apply filters if requested as ordered in list

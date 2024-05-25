@@ -47,7 +47,7 @@ def get_model():
     return model
 
 
-def inference(image, model, bucket_name: str) -> np.ndarray:
+def inference(image, model) -> np.ndarray:
     """
     Take an image path, upscale it and save the result.
 

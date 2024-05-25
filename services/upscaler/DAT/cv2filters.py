@@ -3,7 +3,7 @@ import numpy as np
 
 
 def grayscale(img: np.ndarray) -> np.ndarray:
-    return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) * 255
 
 def sharpening(img: np.ndarray) -> np.ndarray:
     kernel = np.array([[-1,-1,-1], [-1,9,-1], [-1,-1,-1]])

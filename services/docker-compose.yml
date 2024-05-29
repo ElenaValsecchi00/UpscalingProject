@@ -1,0 +1,5 @@
+services:
+  editor:
+    build: .
+    ports:
+      - "80:5100"

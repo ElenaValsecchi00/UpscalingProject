@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eks-editor-deployment
+  namespace: eks-editor-app-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eks-editor-app
+  template:
+    metadata:
+      labels:
+        app: eks-editor-app
+    spec:
+      containers:
+      - name: eks-editor-app
+        image: my-flask-app:latest # TODO: Replace this
+        ports:
+        - containerPort: 5000

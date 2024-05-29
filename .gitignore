@@ -1,6 +1,5 @@
 cloud-env/
 node_modules/
-*.pth
 *.pyc
 *.png
 *.cfg

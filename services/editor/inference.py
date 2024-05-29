@@ -33,7 +33,7 @@ opt = {
         "resi_connection": '1conv'
     },
     "path": {
-        "pretrain_network_g": "models/DAT_x4.pth",
+        "pretrain_network_g": "pretrained/DAT_x4.pth",
         "strict_load_g": True
     },
     "val": {

@@ -11,8 +11,9 @@ UPSCALER_URL = os.getenv('UPSCALER_URL')
 def request_upscale():
     response = requests.post(f'{UPSCALER_URL}/api/edit', json={
         "image":"baboon.png_180cbebb-e883-4a69-bb58-2cd116e28c25",
-        "upscale": False,
-        "filters": ["grayscale"]
+        "upscale": True,
+        "harmonize":True,
+        "filters": ["sharpening", "noise_red"]
     })
     print(response.content)
 

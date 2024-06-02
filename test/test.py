@@ -2,7 +2,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-load_dotenv("../.env")
+load_dotenv(".env")
 
 # Load the environment variables
 BACKEND_URL = os.getenv('BACKEND_URL')

@@ -4,10 +4,6 @@ import os
 import numpy as np
 import cv2
 
-# Load the AWS Credentials from the current path
-os.environ['AWS_SHARED_CREDENTIALS_FILE'] = './aws-credentials.cfg'
-os.environ['AWS_CONFIG_FILE'] = './aws-config.cfg'
-
 # Create an S3 client and resource
 s3_client = boto3.client('s3')
 s3_resource = boto3.resource('s3')

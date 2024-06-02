@@ -4,3 +4,4 @@ node_modules/
 *.png
 *.cfg
 services/.env
+services/eks-secrets.yml

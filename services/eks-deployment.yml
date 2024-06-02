@@ -15,6 +15,27 @@ spec:
     spec:
       containers:
       - name: eks-editor-app
-        image: my-flask-app:latest # TODO: Replace this
+        image: davegabe/image-editor:v1-release
         ports:
-        - containerPort: 5000
+        - containerPort: 5100
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: eks-editor-secrets
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: eks-editor-secrets
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: eks-editor-secrets
+              key: AWS_SESSION_TOKEN
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            secretKeyRef:
+              name: eks-editor-secrets
+              key: AWS_DEFAULT_REGION

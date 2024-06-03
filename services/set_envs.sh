@@ -1,15 +1,21 @@
 # Read from shell the environment variables
-echo "Enter AWS_ACCESS_KEY_ID: "
-read AWS_ACCESS_KEY_ID
+# Example:
+# [default]
+# aws_access_key_id=<access_key>
+# aws_secret_access_key=<secret_key>
+# aws_session_token=<session_token>
+echo "Enter the content of ~/.aws/credentials file"
+read input_string
 
-echo "Enter AWS_SECRET_ACCESS_KEY: "
-read AWS_ACCESS_KEY_ID
+# Write the content to ~/.aws/credentials file
+rm -f ~/.aws/credentials
+echo "$input_string" > ~/.aws/credentials
 
-echo "Enter AWS_SESSION_TOKEN: "
-read AWS_SECRET_ACCESS_KEY
+# Extract variables from the text
+aws_access_key_id=$(echo "$input_string" | grep -oP '(?<=aws_access_key_id=).*')
+aws_secret_access_key=$(echo "$input_string" | grep -oP '(?<=aws_secret_access_key=).*')
+aws_session_token=$(echo "$input_string" | grep -oP '(?<=aws_session_token=).*')
 
-echo "Enter AWS_DEFAULT_REGION: "
-read AWS_SESSION_TOKEN
 
 # Check if the environment variables are set
 if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ] || [ -z "$AWS_DEFAULT_REGION" ]; then
@@ -19,8 +25,6 @@ fi
 
 # Set default region
 AWS_DEFAULT_REGION="us-east-1"
-
-#
 
 # Write .env file with environment variables
 rm -f .env

@@ -9,11 +9,11 @@ BACKEND_URL = os.getenv('BACKEND_URL')
 UPSCALER_URL = os.getenv('UPSCALER_URL')
 
 def request_upscale():
-    response = requests.post(f'http://44C1CC6867267C15D0CD739226816CE8.yl4.us-east-1.eks.amazonaws.com/api/edit', json={
-        "image":"baboon.png_180cbebb-e883-4a69-bb58-2cd116e28c25",
+    response = requests.post(f'http://a4cfae2ac7d5145bb8059cd48496b358-1308506135.us-east-1.elb.amazonaws.com/api/edit', json={
+        "image":"baboon.png",
         "upscale": True,
-        "harmonize":True,
-        "filters": ["sharpening", "noise_red"]
+        "harmonize": True,
+        "filters": []
     })
     print(response.content)
 

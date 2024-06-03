@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: eks-editor-app
-        image: davegabe/image-editor:v3-release
+        image: davegabe/image-editor:v4-release
         ports:
         - containerPort: 5100
         env:

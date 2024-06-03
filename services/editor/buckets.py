@@ -30,37 +30,6 @@ def load_image(bucket_name: str, image_path: str) -> dict:
     return img
 
 
-def create_bucket(s3_connection: boto3.client) -> tuple[str, bool]:
-    """
-    Create an S3 bucket if it does not exist.
-
-    Args:
-        bucket_prefix: Prefix for the bucket name
-        s3_connection: Boto3 S3 connection
-
-    Returns:
-        str: Name of the bucket
-        bool: True if the bucket was created successfully
-    """
-    # Check if already exists
-    response = s3_connection.list_buckets()
-    for bucket in response['Buckets']:
-        if BUCKET_PREFIX in bucket['Name']:
-            return bucket['Name'], True
-        
-    # Create a bucket in the S3 service
-    name = f"{BUCKET_PREFIX}_{str(uuid.uuid4())}"
-    bucket_response = s3_connection.create_bucket(
-        Bucket=name
-    )
-
-    # Check if the bucket was created successfully
-    if bucket_response['ResponseMetadata']['HTTPStatusCode'] == 200:
-        return name, True
-    
-    # Return False if the bucket was not created
-    return name, False
-
 def upload_file_to_aws(file_path: str, bucket: str, filename: str) -> tuple[str, bool]:
     """
     Upload a file to an S3 bucket.
@@ -124,15 +93,3 @@ def download_from_aws(bucket: str, filename: str) -> bytes:
         print(f"Error: {e}")
         return b""
 
-def main():
-    bucket_name, response = create_bucket(s3_connection=s3_resource.meta.client)
-    if response:
-        print(f"Bucket Created: {bucket_name}")
-        #upload_file_to_aws("../services/upscaler/DAT/images/baboon.png", bucket_name, "baboon.png")
-        file_name, status = upload_to_aws(b"Hello World", bucket_name, "hello.txt")
-    else:
-        print(f"Bucket Not Created: {bucket_name}")
-    s3_client.download_file(bucket_name, file_name, 'newfile.txt')
-
-if __name__ == '__main__':
-    main()

@@ -6,7 +6,12 @@ from cv2filters import grayscale, sharpening, noise_red, display_image
 
 app = Flask(__name__)
 model = get_model()
-BUCKET_NAME, _ = buckets.create_bucket(buckets.s3_client)
+BUCKET_NAME = "image-editor-bucket-444"
+
+@app.route('/api/health', methods=['GET', 'POST'])
+def health():
+    message = {"message": f"Service is up and running ({request.method})"}
+    return jsonify(message)
 
 @app.route('/api/edit', methods=['POST'])
 def edit():

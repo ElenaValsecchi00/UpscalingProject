@@ -10,3 +10,8 @@ Then create the kubefile for the cluster:
 ```
 aws eks update-kubeconfig --region us-east-1 --name image-editor-cluster
 ```
+
+Get external ip of load balancer using:
+```
+kubectl get svc eks-editor-service -o wide
+```

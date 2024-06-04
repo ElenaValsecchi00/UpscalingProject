@@ -41,10 +41,10 @@ AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION" > .env
 
 # Set eks-secrets.yml with base64 encoded environment variables
-AWS_ACCESS_KEY_ID=$(echo -n $AWS_ACCESS_KEY_ID | base64)
-AWS_SECRET_ACCESS_KEY=$(echo -n $AWS_SECRET_ACCESS_KEY | base64)
-AWS_SESSION_TOKEN=$(echo -n $AWS_SESSION_TOKEN | base64)
-AWS_DEFAULT_REGION=$(echo -n $AWS_DEFAULT_REGION | base64)
+AWS_ACCESS_KEY_ID=$(echo -n $AWS_ACCESS_KEY_ID | base64 -w 0)
+AWS_SECRET_ACCESS_KEY=$(echo -n $AWS_SECRET_ACCESS_KEY | base64 -w 0)
+AWS_SESSION_TOKEN=$(echo -n $AWS_SESSION_TOKEN | base64 -w 0)
+AWS_DEFAULT_REGION=$(echo -n $AWS_DEFAULT_REGION | base64 -w 0)
 echo "apiVersion: v1
 kind: Secret
 metadata:
@@ -58,6 +58,6 @@ data:
 
 
 # Enter name of the cluster
-echo "Enter the name of the cluster"
-read CLUSTER_NAME
-aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
+# echo "Enter the name of the cluster"
+# read CLUSTER_NAME
+# aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME

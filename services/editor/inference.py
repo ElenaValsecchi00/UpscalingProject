@@ -25,29 +25,27 @@ opt = {
         "in_chans": 3,
         "img_size": 64,
         "img_range": 1.,
+        "depth": [18],
+        "embed_dim": 60,
+        "num_heads": [6],
+        "expansion_factor": 2,
+        "resi_connection": '3conv',
         "split_size": [8, 32],
-        "depth": [6, 6, 6, 6, 6, 6],
-        "embed_dim": 180,
-        "num_heads": [6, 6, 6, 6, 6, 6],
-        "expansion_factor": 4,
-        "resi_connection": '1conv'
+        "upsampler": 'pixelshuffledirect'
     },
     "path": {
-        "pretrain_network_g": "pretrained/DAT_x4.pth",
-        "strict_load_g": True
+        "pretrain_network_g": "pretrained/DAT_light_x4.pth",
+        "strict_load_g": False
     },
     "val": {
         "save_img": True,
         "suffix": 'x4',  # add suffix to saved images, if None, use exp name
-        "use_chop": False  # True to save memory, if img too large
+        "use_chop": True  # True to save memory, if img too large
     }
 }
 model: DATModel = build_model(opt)
-def get_model():
-    return model
 
-
-def inference(image, model) -> np.ndarray:
+def inference(image) -> np.ndarray:
     """
     Take an image path, upscale it and save the result.
 

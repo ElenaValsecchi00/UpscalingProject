@@ -1,11 +1,10 @@
 from flask import Flask, request, jsonify
-from inference import inference as ups_inference, get_model
+from inference import inference as ups_inference
 from harmo_inference import inference as harmo_inference
 import buckets
 from cv2filters import grayscale, sharpening, noise_red, display_image
 
 app = Flask(__name__)
-model = get_model()
 BUCKET_NAME, _ = buckets.create_bucket(buckets.s3_client)
 
 @app.route('/api/health', methods=['GET', 'POST'])
@@ -29,7 +28,7 @@ def edit():
     
     # Apply upscale if requested
     if upscale:
-        image = ups_inference(image, model)
+        image = ups_inference(image)
         print("ho upscalato")
 
     if harmonize:

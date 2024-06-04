@@ -9,5 +9,8 @@ kubectl apply -f eks-service.yml
 kubectl apply -f eks-deployment.yml
 kubectl apply -f eks-secrets.yml
 
+# Wait for 15 seconds
+sleep 15
+
 # Get the external IP address of the service
 kubectl get svc eks-editor-service -o wide

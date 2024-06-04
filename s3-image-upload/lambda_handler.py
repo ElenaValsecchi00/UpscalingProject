@@ -63,6 +63,6 @@ def lambda_handler(event, context):
 
     # Return the response
     return {
-        'statusCode': 200,
-        'body': json.dumps(response.data)
+        'statusCode': response.status,
+        'body': response.data
     }

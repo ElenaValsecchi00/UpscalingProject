@@ -40,7 +40,7 @@ opt = {
     "val": {
         "save_img": True,
         "suffix": 'x4',  # add suffix to saved images, if None, use exp name
-        "use_chop": True  # True to save memory, if img too large
+        "use_chop": False  # True to save memory, if img too large
     }
 }
 model: DATModel = build_model(opt)

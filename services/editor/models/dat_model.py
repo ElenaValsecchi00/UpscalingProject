@@ -23,7 +23,7 @@ class DATModel(SRModel):
 
         # test by partitioning
         else:
-            _, C, h, w = self.lq.size()
+            C, h, w = self.lq.size()
             split_token_h = h // 200 + 1  # number of horizontal cut sections
             split_token_w = w // 200 + 1  # number of vertical cut sections
 
@@ -38,10 +38,9 @@ class DATModel(SRModel):
                 mod_pad_w = patch_size_tmp_w - w % patch_size_tmp_w
                 
             img = self.lq
-            img = torch.cat([img, torch.flip(img, [2])], 2)[:, :, :h+mod_pad_h, :]
-            img = torch.cat([img, torch.flip(img, [3])], 3)[:, :, :, :w+mod_pad_w]
+            img = F.pad(img, (0, mod_pad_w, 0, mod_pad_h), 'reflect')
 
-            _, _, H, W = img.size()
+            _, H, W = img.size()
             split_h = H // split_token_h  # height of each partition
             split_w = W // split_token_w  # width of each partition
 

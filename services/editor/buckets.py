@@ -4,10 +4,6 @@ import os
 import numpy as np
 import cv2
 
-# Load the AWS Credentials from the current path
-os.environ['AWS_SHARED_CREDENTIALS_FILE'] = './aws-credentials.cfg'
-os.environ['AWS_CONFIG_FILE'] = './aws-config.cfg'
-
 # Create an S3 client and resource
 s3_client = boto3.client('s3')
 s3_resource = boto3.resource('s3')
@@ -33,6 +29,27 @@ def load_image(bucket_name: str, image_path: str) -> dict:
     
     return img
 
+
+def upload_file_to_aws(file_path: str, bucket: str, filename: str) -> tuple[str, bool]:
+    """
+    Upload a file to an S3 bucket.
+
+    Args:
+        file_path: Path to the file to upload
+        bucket: Name of the bucket
+        filename: Name of the file in the bucket
+
+    Returns:
+        str: Name of the file in the bucket
+        bool: True if the file was uploaded successfully
+    """
+    try:
+        filename = f"{filename}_{str(uuid.uuid4())}"
+        s3_client.upload_file(file_path, bucket, filename)
+        return filename, True
+    except Exception as e:
+        print(f"Error: {e}")
+        return "", False
 
 def create_bucket(s3_connection: boto3.client) -> tuple[str, bool]:
     """
@@ -64,27 +81,6 @@ def create_bucket(s3_connection: boto3.client) -> tuple[str, bool]:
     
     # Return False if the bucket was not created
     return name, False
-
-def upload_file_to_aws(file_path: str, bucket: str, filename: str) -> tuple[str, bool]:
-    """
-    Upload a file to an S3 bucket.
-
-    Args:
-        file_path: Path to the file to upload
-        bucket: Name of the bucket
-        filename: Name of the file in the bucket
-
-    Returns:
-        str: Name of the file in the bucket
-        bool: True if the file was uploaded successfully
-    """
-    try:
-        filename = f"{filename}_{str(uuid.uuid4())}"
-        s3_client.upload_file(file_path, bucket, filename)
-        return filename, True
-    except Exception as e:
-        print(f"Error: {e}")
-        return "", False
 
 def upload_to_aws(sr_img: np.ndarray, bucket: str, filename: str) -> tuple[str, bool]:
     """
@@ -128,15 +124,3 @@ def download_from_aws(bucket: str, filename: str) -> bytes:
         print(f"Error: {e}")
         return b""
 
-def main():
-    bucket_name, response = create_bucket(s3_connection=s3_resource.meta.client)
-    if response:
-        print(f"Bucket Created: {bucket_name}")
-        #upload_file_to_aws("../services/upscaler/DAT/images/baboon.png", bucket_name, "baboon.png")
-        file_name, status = upload_to_aws(b"Hello World", bucket_name, "hello.txt")
-    else:
-        print(f"Bucket Not Created: {bucket_name}")
-    s3_client.download_file(bucket_name, file_name, 'newfile.txt')
-
-if __name__ == '__main__':
-    main()

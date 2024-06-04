@@ -3,3 +3,5 @@ node_modules/
 *.pyc
 *.png
 *.cfg
+services/.env
+services/eks-secrets.yml

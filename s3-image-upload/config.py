@@ -3,7 +3,3 @@ example_img = "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhki
 
 # Host (function url obtained from the AWS console withouth the https://)
 host = "42h3yf2xgrv6xqsmvommrqpba40pdrzg.lambda-url.us-east-1.on.aws"
-
-# Please add the access_key and secret_key from the credentials file, DO NOT HARD CODE.
-access_key = 'your_access_key'
-secret_key = 'your_secret_key'
